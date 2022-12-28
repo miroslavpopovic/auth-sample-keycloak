@@ -1,0 +1,51 @@
+version: '3.4'
+
+services:
+  auth:
+    image: quay.io/keycloak/keycloak
+    networks:
+      - overlay
+
+  email:
+    image: mailhog/mailhog
+    networks:
+      - overlay
+
+  auth-sample-weather-api:
+    image: ${DOCKER_REGISTRY-}auth-sample-weather-api
+    build:
+      context: .
+      dockerfile: src/Samples.WeatherApi/Dockerfile
+    networks:
+      - overlay
+
+  auth-sample-weathersummary-api:
+    image: ${DOCKER_REGISTRY-}auth-sample-weathersummary-api
+    build:
+      context: .
+      dockerfile: src/Samples.WeatherSummaryApi/Dockerfile
+    networks:
+      - overlay
+
+  auth-sample-mvc-client:
+    image: ${DOCKER_REGISTRY-}auth-sample-mvc-client
+    build:
+      context: .
+      dockerfile: src/Samples.WeatherApi.MvcClient/Dockerfile
+    networks:
+      - overlay
+
+  auth-sample-javascriptbff-client:
+    image: ${DOCKER_REGISTRY-}auth-sample-javascriptbff-client
+    build:
+      context: .
+      dockerfile: src/Samples.WeatherApi.JavaScriptBffClient/Dockerfile
+    networks:
+      - overlay
+
+volumes:
+  sqlserver:
+    driver: local
+
+networks:
+  overlay:
