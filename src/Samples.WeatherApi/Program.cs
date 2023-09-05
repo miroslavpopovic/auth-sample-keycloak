@@ -54,6 +54,19 @@ builder.Services.AddAuthorization(options =>
     });
 });
 
+// CORS policy to allow the React sample client to call the API
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        "default", policy =>
+        {
+            policy
+                .WithOrigins("http://localhost:7216")
+                .AllowAnyHeader()
+                .AllowAnyMethod();
+        });
+});
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -65,6 +78,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseRouting();
+app.UseCors("default");
 
 app.UseAuthentication();
 app.UseAuthorization();

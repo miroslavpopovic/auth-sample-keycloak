@@ -34,6 +34,15 @@ builder.Services
 
         options.SaveTokens = true;
 
+        options.Events = new OpenIdConnectEvents
+        {
+            OnTokenValidated = x =>
+            {
+                Console.WriteLine(x.SecurityToken);
+                return Task.CompletedTask;
+            }
+        };
+
         options.Scope.Add("weather-api");
         options.Scope.Add("weather-summary-api");
         options.Scope.Add("offline_access");
